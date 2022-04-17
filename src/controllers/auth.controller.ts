@@ -1,35 +1,56 @@
 import { Request, Response, NextFunction } from "express";
 import { knex } from "../db/db";
+import bcrypt from "bcrypt";
 import { AuthServices } from "../services/auth.service";
 import moment from "moment";
 // import { User } from "../models/tblWebUser.model";
 import Jwt from "jsonwebtoken";
 
 export class AuthController {
-    async signInAuthenticate(req: Request, res: Response){
-        let {userName, password} = req.body
+    async signUp(req:Request, res:Response){
+        let {username, password, role} = req.body
 
-        let existingUser = await knex('tblWebUser')
-        .where('userName', userName)
+        let existingUser = await knex('tblAUsers')
+        .where('username', username)
 
-        if (password != existingUser[0].password){
-            return res.send({status: 'FAILED', message: "Invalid Credentials"}).end()
+        if (existingUser[0]) {
+            console.log(existingUser)
+            res.send({status: 'FAILED', message: "username exists"})
+        } else {
+            const salt = await bcrypt.genSalt(10);
+        // now we set user password to hashed password
+            let hashedPassword = await bcrypt.hash(password, salt);
+            console.log(username,hashedPassword)
+    
+            await knex('tblAUsers').insert({username, password: hashedPassword, role})
+            let user = await knex('tblAUsers')
+            .where('username', username)
+    
+            res.send({status: 'SUCCESS', user: user[0] })
         }
+    }
+    async signInAuthenticate(req: Request, res: Response){
+        let {username, password} = req.body
 
+        let existingUser = await knex('tblAUsers')
+        .where('username', username)
 
-        let userJWT = Jwt.sign({
-            ledgerCode: existingUser[0].ledgerCode,
-            userName: existingUser[0].userName
-        }, "key")
+        if (existingUser[0].username) {
+            const validPassword = await bcrypt.compare(password, existingUser[0].password)
 
-        // req.session = {
-        //     jwt : userJWT
-        // }
+            if (validPassword){
+                let userJWT = Jwt.sign({
+                    // ledgerCode: existingUser[0].ledgerCode,
+                    username: existingUser[0].username,
+                    agentId: existingUser[0].agentId,
+                    role: existingUser[0].role
+                }, "key")
         
-        // res.cookie("access_token", userJWT)
-        // res.set
-
-        res.send({status: 'SUCCESS', jwt: userJWT})
+                res.send({status: 'SUCCESS', jwt: userJWT})
+            } else {
+                res.send({status: 'FAILED', message: "Invalid Credentials"})
+            }
+        } 
 
     }
 
