@@ -20,7 +20,8 @@ export const currentUser = (req: Request, res: Response, next: NextFunction) => 
         return next()
     }
 
-    let token = req.headers.authorization.split(' ')[1];
+    // let auth = req.headers.authorization.split(' ');
+    let [plan, token] = req.headers.authorization.split(' ')
 
     try {
         const payload = Jwt.verify(
