@@ -7,5 +7,6 @@ const router = express.Router();
 
 const ticketsController = new TicketsController
 router.post('/update',currentUser, asyncHandler(ticketsController.updateTickets));
+router.post('/saveOld',currentUser, asyncHandler(ticketsController.saveTicket));
 
 export { router as ticketsRoute };
