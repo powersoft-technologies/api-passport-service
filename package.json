@@ -1,5 +1,5 @@
 {
-  "name": "api-server-package",
+  "name": "api-passport-service",
   "version": "1.0.0",
   "description": "",
   "main": "app.ts",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/powersoft-technologies/api-server-package.git"
+    "url": "git+https://github.com/powersoft-technologies/api-passport-service.git"
   },
   "author": "Powersoft-Technologies",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/powersoft-technologies/api-server-package/issues"
+    "url": "https://github.com/powersoft-technologies/api-passport-service/issues"
   },
-  "homepage": "https://github.com/powersoft-technologies/api-server-package#readme",
+  "homepage": "https://github.com/powersoft-technologies/api-passport-service#readme",
   "dependencies": {
     "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
