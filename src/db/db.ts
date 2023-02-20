@@ -13,8 +13,8 @@ let knex = Knex({
     connection: {
         host: "103.94.27.38",
         port: 1433,
-        user: "saa",
-        password: "saa123",
+        user: "webd",
+        password: "webd@123",
         database: "AirWin_AaaDemo_2021"
     }
 })
@@ -31,11 +31,19 @@ let myKnex = Knex({
   }
 
 })
-myKnex.raw("SELECT 1").then(() => {
-  console.log("MySQL connected");
+// myKnex.raw("SELECT 1").then(() => {
+//   console.log("MySQL connected");
+// })
+// .catch((e) => {
+//   console.log("MySQL not connected");
+//   console.error(e);
+// });
+
+knex.raw("SELECT 1").then(() => {
+  console.log("MSSQL connected");
 })
 .catch((e) => {
-  console.log("MySQL not connected");
+  console.log("MSSQL not connected");
   console.error(e);
 });
 
